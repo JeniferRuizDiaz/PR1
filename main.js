@@ -70,33 +70,29 @@ class Favorites {
   copyFavorites() {
     return [...this.comics];
   }
-}
+};
 
 // FUNCIONS ------------------------------------
 
 // Cercar comic a la biblioteca
-function findComicById(comics, comicId) {
-  if (comics.length === 0) {
-    return null;
-  }
-  if (comics[0].id === comicId) {
-    return comics[0];
-  }
+const findComicById = (comics, comicId) => {
+  if (comics.length === 0) return null;
+  if (comics[0].id === comicId) return comics[0];
   return findComicById(comics.slice(1), comicId);
-}
+};
 
 // Calcular preu mitjà
-function calculateAveragePrice(comics) {
-  const totalPrice = comics.reduce((acc, comic) => acc + comic.price, 0); // Afegim el valor inicial 0
+const calculateAveragePrice = (comics) => {
+  const totalPrice = comics.reduce((acc, comic) => acc + comic.price, 0);
   return totalPrice / comics.length;
-}
+};
 
 // Calcular COMIC per preu
-function getAffordableComicTitles(arrayComics, maxCost) {
+const getAffordableComicTitles = (arrayComics, maxCost) => {
   const arrayComicsFiltered = arrayComics.filter(comic => comic.price <= maxCost);
   const arrayAffordable = arrayComicsFiltered.map(comic => comic.title);
   return arrayAffordable;
-}
+};
 
 
 // DADES ----------------------
@@ -175,11 +171,11 @@ const cerca = findComicById(favorites.showFavorites(), 2);
 console.log(cerca);
 
 // Cálcul preu mitjà
-const comics = [superman10, capAmerica25, detectiuConan18];
+const comics = [superman10, capAmerica25, detectiuConan1];
 console.log(calculateAveragePrice(comics)); 
 
 // Calcular COMIC per preu
-const comicsExistents = [spiderMan12, capAmerica25, detectiuConan1, superman10];
+const comicsExistents = [capAmerica25, detectiuConan1, superman10];
 const preuMaxim = 5.00;
 const comicsPerPreu = getAffordableComicTitles(comicsExistents, preuMaxim);
 console.log(comicsPerPreu);
