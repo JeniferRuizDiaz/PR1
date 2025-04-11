@@ -1,4 +1,4 @@
-// CLASSES ------------------------------------
+// CLASSES ------------------------------------------------------------------
 
 // THUMBNAIL Classe per obtenir la imatge 
 class Thumbnail {
@@ -6,7 +6,7 @@ class Thumbnail {
     this.path = path;
     this.extension = extension;
   }
-}
+};
 
 // COMIC Classe 
 class Comic {
@@ -26,7 +26,7 @@ class Comic {
   getThumbnailURL() {
     return `${this.thumbnail.path}.${this.thumbnail.extension}`;
   }
-}
+};
 
 // HERO Classe 
 class Hero {
@@ -44,15 +44,16 @@ class Hero {
   getThumbnailURL() {
     return `${this.thumbnail.path}.${this.thumbnail.extension}`;
   }
-}
+};
 
 // FAVORITES Classe 
 class Favorites {
   constructor() {this.comics = [];}
 
-  // Afegeix Favorit 
+  // Afegeix Favorit (si no està ja afegit)
   addFavorite(comic) {
-    this.comics.push(comic);
+    if (!this.comics.some(c => c.id === comic.id)) {
+      this.comics.push(comic);}
   }
   // Elimina Favorit
   removeFavorite(comicId) {
@@ -62,7 +63,7 @@ class Favorites {
   showFavorites() {
     return this.comics;
   }
-  // Afegeix varis Favorits 
+  // Afegeix varis Favorits (sempre que no estiguin ja afegits)
   addMultipleFavorites(...comics) {
     this.comics.push(...comics);
   }
@@ -72,7 +73,17 @@ class Favorites {
   }
 };
 
-// FUNCIONS ------------------------------------
+// FUNCIONS ------------------------------------------------------------------
+
+// Afegir varis Favorits (amb Rest)
+const addMultipleFavoritesRest = (favorites, ...comics) => {
+  comics.forEach(comic => favorites.addFavorite(comic));
+};
+
+// Copia llista Favorits (amb Spread)
+const copyFavoritesSpread = (favorites) => {
+  return [...favorites.showFavorites()];
+};
 
 // Cercar comic a la biblioteca
 const findComicById = (comics, comicId) => {
@@ -95,7 +106,7 @@ const getAffordableComicTitles = (arrayComics, maxCost) => {
 };
 
 
-// DADES ----------------------
+// DADES ------------------------------------------------------------------
 
 // --Creació de COMIC 
 // Thumbnail DetectiuConan1
@@ -105,20 +116,20 @@ const detectiuConan1TN = {path: "http://biblioteca.com/imatge/detective-conan-18
 const detectiuConan1 = new Comic(1, "Detectiu Conan", 1, "Shinichi Kudo, un jove detectiu brillant, és enverinat i es converteix en un nen. Ara, sota el nom de Conan Edogawa, resol casos mentre busca els homes de negre.", 180, detectiuConan1TN, 7.50, ["Gosho Aoyama"], ["Conan Edogawa", "Ran Mouri", "Kogoro Mouri"]);
 
 // Thumbnail Superman10
-const superman10TN = { path: "http://biblioteca.com/imatge/superman", extension: "jpg" };
+const superman10TN = { path: "http://biblioteca.com/imatge/superman", extension: "jpg"};
 
 // COMIC Superman10
 const superman10 = new Comic(2, "Superman", 10, "El llegendari heroi de Krypton, Superman, protegeix Metropolis d’una nova amenaça alienígena.", 36, superman10TN, 5.49, ["Jerry Siegel", "Joe Shuster"], ["Superman", "Lex Luthor"]);
 
 // Thumbnail CapAmerica25
-const capAmerica25TN = { path: "http://biblioteca.com/imatge/cap", extension: "jpg" };
+const capAmerica25TN = { path: "http://biblioteca.com/imatge/cap", extension: "jpg"};
 
 // COMIC CapAmerica25
 const capAmerica25 = new Comic(3, "Captain America", 25, "El Capità Amèrica lluita per la llibertat en una nova aventura.", 40, capAmerica25TN, 5.99, ["Joe Simon", "Jack Kirby"], ["Captain America", "Red Skull"]);
 
 // --Creació de HERO
 // Thumbnail Conan Edogawa
-const conanEdogawaTH = { path: "http://biblioteca.com/hero/conanedogawa", extension: "jpg" };
+const conanEdogawaTH = { path: "http://biblioteca.com/hero/conanedogawa", extension: "jpg"};
 
 // HERO Conan Edogawa
 const conanEdogawa = new Hero(1, "Conan Edogawa", "Un brillant jove detectiu atrap al cos d’un nen, resolent casos mentre cerca tornar al seu estat original.", "1994-01-08T00:00:00Z", conanEdogawaTH, "http://gateway.detectiveconan.com/v1/public/characters/201", ["Detective Conan Vol. 1", "Detective Conan Vol. 5", "The Scarlet Bullet"]);
@@ -166,6 +177,14 @@ const copiaFavorits = favorites.copyFavorites();
 console.log(copiaFavorits);
 
 // --PROVES PER FUNCIONS
+// Afegir varis Favorits (amb Rest)
+addMultipleFavoritesRest(favorites, superman10, capAmerica25);
+console.log(favorites.showFavorites());
+
+// Copia llista Favorits (amb Spread)
+const copiaFinal = copyFavoritesSpread(favorites);
+console.log(copiaFinal);
+
 // Cercar un COMIC a Favorits
 const cerca = findComicById(favorites.showFavorites(), 2);
 console.log(cerca);
